@@ -1,0 +1,5 @@
+**/.vs/
+**/bin/
+**/logs/
+**/obj/
+API_Challenge/API/app.db
