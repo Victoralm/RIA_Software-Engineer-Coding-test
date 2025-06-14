@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "API&Simulator",
+    "Projects": [
+      {
+        "Path": "API\\API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Simulator\\Simulator.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

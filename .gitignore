@@ -2,4 +2,4 @@
 **/bin/
 **/logs/
 **/obj/
-API_Challenge/API/app.db
+**/app*.db*
