@@ -29,10 +29,14 @@ public class CustomerRepository : ICustomerRepository
             await _context.SaveChangesAsync();
             return true;
         }
+        catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
+        {
+            _logger.LogWarning(ex, "Attempt to insert duplicate ID.");
+            return false;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while adding Customer: {Message}", ex.Message);
-            Console.WriteLine($"Error while adding Customer: {ex.Message}");
             return false;
         }
     }
@@ -55,7 +59,6 @@ public class CustomerRepository : ICustomerRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while getting Customers: {Message}", ex.Message);
-            Console.WriteLine($"Error while getting Customers: {ex.Message}");
             return null;
         }
     }
@@ -81,7 +84,6 @@ public class CustomerRepository : ICustomerRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while checking Customer Id: {Message}", ex.Message);
-            Console.WriteLine($"Error while checking Customer Id: {ex.Message}");
             return false;
         }
     }

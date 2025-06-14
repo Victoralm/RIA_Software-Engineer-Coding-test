@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Serilog;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
 
 namespace API.Middlewares;

@@ -23,7 +23,7 @@ public class CustomerController : ControllerBase
         {
             var result = await _mediator.Send(command);
 
-            return result == true ? Ok(result) : BadRequest();
+            return result ? Ok(result) : BadRequest();
         }
         catch (ValidationException ex)
         {

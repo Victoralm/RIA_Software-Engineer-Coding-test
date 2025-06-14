@@ -1,4 +1,6 @@
-﻿namespace API.DI;
+﻿using API.Middlewares;
+
+namespace API.DI;
 
 public static class DependencyInjection
 {
@@ -24,6 +26,10 @@ public static class DependencyInjection
         app.UseHttpsRedirection();
 
         app.MapControllers();
+
+        // Middlewares
+        app.UseMiddleware<RequestPerformanceLoggingMiddleware>();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         return app;
     }
