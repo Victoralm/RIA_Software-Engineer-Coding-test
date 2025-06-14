@@ -26,8 +26,6 @@ public readonly record struct NotePack(int N100, int N50, int N10)
 
 public class DenominationEngine(int[] denominations)
 {
-    private readonly int[] _denoms = denominations.OrderDescending().ToArray();
-
     public IEnumerable<NotePack> Enumerate(int amount)
     {
         // Como só há três denominações, usei loops — mais rápido e simples.
