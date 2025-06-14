@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
@@ -24,6 +25,10 @@ public class CustomerController : ControllerBase
             var result = await _mediator.Send(command);
 
             return result ? Ok(result) : BadRequest();
+        }
+        catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
+        {
+            return BadRequest(new { errors = new[] { new { Message = "Duplicate ID." } } });
         }
         catch (ValidationException ex)
         {

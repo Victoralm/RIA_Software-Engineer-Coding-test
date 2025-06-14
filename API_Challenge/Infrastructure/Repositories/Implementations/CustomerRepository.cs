@@ -32,12 +32,12 @@ public class CustomerRepository : ICustomerRepository
         catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
         {
             _logger.LogWarning(ex, "Attempt to insert duplicate ID.");
-            return false;
+            throw;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while adding Customer: {Message}", ex.Message);
-            return false;
+            throw;
         }
     }
 
@@ -59,7 +59,7 @@ public class CustomerRepository : ICustomerRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while getting Customers: {Message}", ex.Message);
-            return null;
+            throw;
         }
     }
 
