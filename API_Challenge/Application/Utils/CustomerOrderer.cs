@@ -6,51 +6,44 @@ public static class CustomerOrderer
 {
     public static List<Customer> OrderByName(IEnumerable<Customer> customers)
     {
-        #region Ordering the Customers with Binary Search
-        List<Customer> ordered = new();
+        var list = customers.ToList();
+        MergeSort(list, 0, list.Count - 1);
+        return list;
+    }
 
-        foreach (var customer in customers)
+    private static void MergeSort(List<Customer> list, int left, int right)
+    {
+        if (left >= right) return;
+
+        int mid = (left + right) / 2;
+        MergeSort(list, left, mid);
+        MergeSort(list, mid + 1, right);
+        Merge(list, left, mid, right);
+    }
+
+    private static void Merge(List<Customer> list, int left, int mid, int right)
+    {
+        var temp = new List<Customer>(right - left + 1);
+        int i = left, j = mid + 1;
+
+        while (i <= mid && j <= right)
         {
-            int left = 0;
-            int right = ordered.Count;
-
-            // Binary search to find correct insertion index
-            while (left < right)
-            {
-                int mid = (left + right) / 2;
-                int cmp = string.Compare(
-                    ordered[mid].LastName,
-                    customer.LastName,
-                    StringComparison.Ordinal
-                );
-
-                if (cmp < 0)
-                {
-                    left = mid + 1;
-                }
-                else if (cmp > 0)
-                {
-                    right = mid;
-                }
-                else
-                {
-                    // LastName equal, compare FirstName
-                    cmp = string.Compare(
-                        ordered[mid].FirstName,
-                        customer.FirstName,
-                        StringComparison.Ordinal
-                    );
-                    if (cmp < 0)
-                        left = mid + 1;
-                    else
-                        right = mid;
-                }
-            }
-
-            ordered.Insert(left, customer);
+            if (Compare(list[i], list[j]) <= 0)
+                temp.Add(list[i++]);
+            else
+                temp.Add(list[j++]);
         }
-        #endregion
+        while (i <= mid) temp.Add(list[i++]);
+        while (j <= right) temp.Add(list[j++]);
 
-        return ordered;
+        for (int k = 0; k < temp.Count; k++)
+            list[left + k] = temp[k];
+    }
+
+    private static int Compare(Customer a, Customer b)
+    {
+        int cmp = string.Compare(a.LastName, b.LastName, StringComparison.Ordinal);
+        if (cmp != 0) return cmp;
+        return string.Compare(a.FirstName, b.FirstName, StringComparison.Ordinal);
     }
 }
