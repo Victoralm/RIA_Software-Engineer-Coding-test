@@ -25,8 +25,10 @@ public class CustomerRepository : ICustomerRepository
 
         try
         {
+            using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
             await _context.Customers.AddRangeAsync(customers);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return true;
         }
         catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
