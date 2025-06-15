@@ -1,5 +1,4 @@
 ﻿using Application.Repositories.Interfaces;
-using Application.Utils;
 using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +57,7 @@ public class CustomerRepository : ICustomerRepository
                 .AsNoTracking()
                 .ToListAsync();
 
-            var ordered = CustomerOrderer.OrderByName(dbCustomers);
+            var ordered = Customer.OrderByName(dbCustomers);
 
             return ordered;
         }
