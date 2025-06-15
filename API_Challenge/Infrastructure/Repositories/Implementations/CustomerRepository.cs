@@ -25,12 +25,16 @@ public class CustomerRepository : ICustomerRepository
 
         try
         {
+            // Preventing Race Condition - Transaction Isolation Level
             using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
+
             await _context.Customers.AddRangeAsync(customers);
             await _context.SaveChangesAsync();
+
             await transaction.CommitAsync();
             return true;
         }
+        // Preventing Race Condition - Optimistic Concurrency (Best Practice)
         catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
         {
             _logger.LogWarning(ex, "Attempt to insert duplicate ID.");

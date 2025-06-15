@@ -18,7 +18,7 @@ public class CustomerPostCommandHandler : IRequestHandler<CustomerBulkPostComman
 
     public async Task<bool> Handle(CustomerBulkPostCommand request, CancellationToken cancellationToken)
     {
-        // Mapping CustomerPostCommand to Customer
+        // Mapping CustomerBulkPostCommand to IEnumerable Customer
         var customers = request.Customers.Select(c => new Customer
         {
             Id = c.Id,

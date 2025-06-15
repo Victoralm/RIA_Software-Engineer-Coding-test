@@ -25,14 +25,6 @@ public class ApiClient
         return (resp.StatusCode, content);
     }
 
-    public async Task<List<CustomerDto>> GetCustomersAsync()
-    {
-        var resp = await _client.GetAsync("/Customer");
-        resp.EnsureSuccessStatusCode();
-        var customers = await resp.Content.ReadFromJsonAsync<List<CustomerDto>>();
-        return customers ?? new List<CustomerDto>();
-    }
-
     public async Task<(List<CustomerDto> Customers, System.Net.HttpStatusCode StatusCode, string Content)> GetCustomersWithStatusAsync()
     {
         var resp = await _client.GetAsync("/Customer");

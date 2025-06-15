@@ -1,5 +1,4 @@
 ﻿using Application.Behaviors;
-using Application.Repositories.Interfaces;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +12,7 @@ public static class DependencyInjection
     public static void AddSerilogLogging(this WebApplicationBuilder builder)
     {
         var logDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Logs");
-        Directory.CreateDirectory(logDirectory); // Garante que o diretório existe
+        Directory.CreateDirectory(logDirectory);
 
         var logFile = Path.Combine(logDirectory, "app.log");
 
