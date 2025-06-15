@@ -1,5 +1,7 @@
 # RIA - Software Engineer Coding test
 
+[Proposed Test](ProposedTest.md)
+
 ## Denomination routine
 
 The `DenominationRoutine_Challenge` project aims to calculate and display all possible combinations of banknotes to pay specific amounts, using only the available denominations (100, 50, and 10 euros). The main features are:
