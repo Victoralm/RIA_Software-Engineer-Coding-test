@@ -28,7 +28,7 @@ public class DenominationEngine(int[] denominations)
 {
     public IEnumerable<NotePack> Enumerate(int amount)
     {
-        // Como só há três denominações, usei loops — mais rápido e simples.
+        // As there are only three denominations, I used loops — faster and simpler.
         for (int n100 = 0; n100 <= amount / 100; n100++)
             for (int n50 = 0; n50 <= (amount - n100 * 100) / 50; n50++)
             {
