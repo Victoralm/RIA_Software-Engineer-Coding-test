@@ -1,7 +1,7 @@
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Net.Http.Json;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using static APITests.CustomerTestUtils;
 
 namespace APITests;
@@ -20,7 +20,7 @@ public class GetCustomersValidationTests : IClassFixture<WebApplicationFactory<P
     {
         int maxId = await GetMaxCustomerIdAsync(_client);
 
-        // Adiciona clientes via POST
+        // Add customers via POST
         var customersToAdd = new[]
         {
             new { id = maxId + 1, firstName = "Anna", lastName = "Brown", age = 22 },
@@ -30,7 +30,7 @@ public class GetCustomersValidationTests : IClassFixture<WebApplicationFactory<P
         var content = await postResponse.Content.ReadAsStringAsync();
         postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        // Faz o GET
+        // Perform the GET
         var response = await _client.GetAsync("/Customer");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -40,7 +40,7 @@ public class GetCustomersValidationTests : IClassFixture<WebApplicationFactory<P
         customers.Should().ContainSingle(c => c.Id == maxId + 2 && c.FirstName == "Zack" && c.LastName == "Smith" && c.Age == 35);
     }
 
-    // DTO auxiliar para deserialização
+    // Auxiliary DTO for deserialization
     public class CustomerDto
     {
         public int Id { get; set; }

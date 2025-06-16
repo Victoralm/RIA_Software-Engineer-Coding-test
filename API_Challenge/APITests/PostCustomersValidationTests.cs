@@ -1,16 +1,16 @@
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Net.Http.Json;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using static APITests.CustomerTestUtils;
 
 namespace APITests;
 
-public class PostCustomersValidationTests : IClassFixture<WebApplicationFactory<Program>> 
+public class PostCustomersValidationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
-    public PostCustomersValidationTests(WebApplicationFactory<Program> factory) 
+    public PostCustomersValidationTests(WebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient();
     }
@@ -73,7 +73,7 @@ public class PostCustomersValidationTests : IClassFixture<WebApplicationFactory<
     {
         int maxId = await GetMaxCustomerIdAsync(_client);
 
-        // Primeiro, adiciona um cliente válido
+        // First, add a valid customer
         var customers1 = new[]
         {
             new { id = maxId + 1, firstName = "John", lastName = "Doe", age = 25 }
@@ -84,7 +84,7 @@ public class PostCustomersValidationTests : IClassFixture<WebApplicationFactory<
 
         response1.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        // Agora, tenta adicionar outro cliente com o mesmo ID
+        // Now, try to add another customer with the same ID
         var customers2 = new[]
         {
             new { id = maxId + 1, firstName = "Jane", lastName = "Smith", age = 30 }
