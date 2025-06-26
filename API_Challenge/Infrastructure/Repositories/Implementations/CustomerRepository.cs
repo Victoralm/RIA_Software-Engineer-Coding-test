@@ -22,11 +22,11 @@ public class CustomerRepository : ICustomerRepository
         if (_context.Customers == null)
             throw new InvalidOperationException("Customer DbSet is not initialized.");
 
+        // Declaring the transaction variable outside the try block to ensure it is in scope.
+        using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
+
         try
         {
-            // Preventing Race Condition - Transaction Isolation Level
-            using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
-
             await _context.Customers.AddRangeAsync(customers);
             await _context.SaveChangesAsync();
 
@@ -36,11 +36,13 @@ public class CustomerRepository : ICustomerRepository
         // Preventing Race Condition - Optimistic Concurrency (Best Practice)
         catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
         {
+            await transaction.RollbackAsync(); // Explicit rollback - Not mandatory, but it can save a few milliseconds by not waiting for Dispose()
             _logger.LogWarning(ex, "Attempt to insert duplicate ID.");
             throw;
         }
         catch (Exception ex)
         {
+            await transaction.RollbackAsync(); // Explicit rollback - Not mandatory, but it can save a few milliseconds by not waiting for Dispose()
             _logger.LogError(ex, "Error while adding Customer: {Message}", ex.Message);
             throw;
         }
