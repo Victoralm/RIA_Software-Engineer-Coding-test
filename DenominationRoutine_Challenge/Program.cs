@@ -1,15 +1,23 @@
-﻿Console.OutputEncoding = System.Text.Encoding.UTF8;
+﻿namespace DenominationRoutine_Challenge;
 
-var cartridges = new[] { 100, 50, 10 };
-var payouts = new[] { 30, 50, 60, 80, 140, 230, 370, 610, 980 };
-
-var engine = new DenominationEngine(cartridges);
-
-foreach (var amount in payouts)
+class Program
 {
-    Console.WriteLine($"\n=== {amount} EUR ===");
-    foreach (var combo in engine.Enumerate(amount))
-        Console.WriteLine($"  {combo}");
+    static void Main(string[] args)
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        var cartridges = new[] { 100, 50, 10 };
+        var payouts = new[] { 30, 50, 60, 80, 140, 230, 370, 610, 980 };
+
+        var engine = new DenominationEngine();
+
+        foreach (var amount in payouts)
+        {
+            Console.WriteLine($"\n=== {amount} EUR ===");
+            foreach (var combo in engine.Enumerate(amount))
+                Console.WriteLine($"  {combo}");
+        }
+    }
 }
 
 public readonly record struct NotePack(int N100, int N50, int N10)
@@ -24,11 +32,10 @@ public readonly record struct NotePack(int N100, int N50, int N10)
     }
 }
 
-public class DenominationEngine(int[] denominations)
+public class DenominationEngine()
 {
     public IEnumerable<NotePack> Enumerate(int amount)
     {
-        // As there are only three denominations, I used loops — faster and simpler.
         for (int n100 = 0; n100 <= amount / 100; n100++)
             for (int n50 = 0; n50 <= (amount - n100 * 100) / 50; n50++)
             {
